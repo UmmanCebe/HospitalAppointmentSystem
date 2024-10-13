@@ -11,4 +11,5 @@ public interface IAppointmentService
     Appointment Delete(Guid id);
     List<Appointment> GetAll();
     Appointment GetById(Guid id);
+    void DeleteExpired();
 }

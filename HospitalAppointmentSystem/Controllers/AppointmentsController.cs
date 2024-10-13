@@ -21,6 +21,7 @@ public class AppointmentsController : ControllerBase
     public IActionResult GetAll()
     {
         var result = _appointmentService.GetAll();
+        _appointmentService.DeleteExpired();  
         return Ok(result);
     }
 
@@ -47,15 +48,15 @@ public class AppointmentsController : ControllerBase
     }
 
     [HttpPut("update")]
-    public IActionResult Update(Guid id, Appointment updatedAppointment)
+    public IActionResult Update( Appointment updatedAppointment)
     {
-        var appointment = _appointmentService.GetById(id);
-        appointment.PatientName = updatedAppointment.PatientName;
-        appointment.AppointmentDate = updatedAppointment.AppointmentDate;
-        appointment.DoctorId = updatedAppointment.DoctorId;
-        appointment.Id = updatedAppointment.Id;
+       // var appointment = _appointmentService.GetById(id);
+        //appointment.PatientName = updatedAppointment.PatientName;
+        //appointment.AppointmentDate = updatedAppointment.AppointmentDate;
+        //appointment.DoctorId = updatedAppointment.DoctorId;
+        //appointment.Id = updatedAppointment.Id;
 
-        var result = _appointmentService.Update(appointment);
+        var result = _appointmentService.Update(updatedAppointment);
         return Ok(result);
     }
 

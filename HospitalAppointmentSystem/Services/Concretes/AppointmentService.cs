@@ -73,6 +73,15 @@ namespace HospitalAppointmentSystem.Services.Concretes
             return result;
         }
 
+        public void DeleteExpired()
+        {
+            var result = _appointmentRepository.GetAll().Where(x => x.AppointmentDate < DateTime.Now).ToList();
+            foreach (var appointment in result)
+            {
+                _appointmentRepository.Delete(appointment.Id);
+            }
+        }
+
         public List<Appointment> GetAll()
         {
             return _appointmentRepository.GetAll();
@@ -86,7 +95,7 @@ namespace HospitalAppointmentSystem.Services.Concretes
 
         public Appointment Update(Appointment appointment)
         {
-            var result = _appointmentRepository.Update(appointment);
+            Appointment result = _appointmentRepository.Update(appointment);
             return result;
         }
     }

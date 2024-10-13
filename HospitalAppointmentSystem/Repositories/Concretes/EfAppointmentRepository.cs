@@ -31,12 +31,14 @@ namespace HospitalAppointmentSystem.Repositories.Concretes
 
         public List<Appointment> GetAll()
         {
+            _msSqlContext.SaveChanges();
             return _msSqlContext.Appointments.ToList();
+
         }
 
         public List<Appointment> GetAppointmentsByDoctorId(int doctorId)
         {
-            return _msSqlContext.Appointments.Where(x=>x.DoctorId == doctorId).ToList();
+            return _msSqlContext.Appointments.Where(x => x.DoctorId == doctorId).ToList();
         }
 
         public Appointment GetById(Guid id)
