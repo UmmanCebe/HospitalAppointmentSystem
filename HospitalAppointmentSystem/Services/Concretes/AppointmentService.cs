@@ -46,13 +46,24 @@ namespace HospitalAppointmentSystem.Services.Concretes
                 };
             }
 
+            var existingAppointments = _appointmentRepository.GetAppointmentsByDoctorId(appointment.DoctorId);
+            if (existingAppointments.Count >= 10)
+            {
                 return new ReturnModel<Appointment>
                 {
-
-                    Data = _appointmentRepository.Add(appointment),
-                    Success = true,
-                    Message = "Randevu başarıyla oluşturuldu."
+                    Data = null,
+                    Success = false,
+                    Message = "Bu doktor için en fazla 10 randevu oluşturulabilir."
                 };
+            }
+
+            return new ReturnModel<Appointment>
+            {
+
+                Data = _appointmentRepository.Add(appointment),
+                Success = true,
+                Message = "Randevu başarıyla oluşturuldu."
+            };
         }
 
         public Appointment Delete(Guid id)

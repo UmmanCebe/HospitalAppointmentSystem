@@ -34,6 +34,11 @@ namespace HospitalAppointmentSystem.Repositories.Concretes
             return _msSqlContext.Appointments.ToList();
         }
 
+        public List<Appointment> GetAppointmentsByDoctorId(int doctorId)
+        {
+            return _msSqlContext.Appointments.Where(x=>x.DoctorId == doctorId).ToList();
+        }
+
         public Appointment GetById(Guid id)
         {
             Appointment entity = _msSqlContext.Appointments.Find(id);
