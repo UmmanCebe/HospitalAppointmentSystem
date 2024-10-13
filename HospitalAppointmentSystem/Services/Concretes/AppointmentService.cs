@@ -1,6 +1,8 @@
 ﻿using HospitalAppointmentSystem.Models;
 using HospitalAppointmentSystem.Repositories.Abstracts;
+using HospitalAppointmentSystem.ReturnModels;
 using HospitalAppointmentSystem.Services.Abstracts;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HospitalAppointmentSystem.Services.Concretes
 {
@@ -11,15 +13,51 @@ namespace HospitalAppointmentSystem.Services.Concretes
         {
             _appointmentRepository = appointmentRepository;
         }
-        public Appointment Add(Appointment appointment)
+        public ReturnModel<Appointment> Add(Appointment appointment)
         {
+            DateTime today = DateTime.Now;
 
-           Appointment createdAppointment = _appointmentRepository.Add(appointment);
-            return createdAppointment;
+            if (appointment.AppointmentDate < today.AddDays(3))
+            {
+                return new ReturnModel<Appointment>
+                {
+                    Data = null,
+                    Success = false,
+                    Message = "En az 3 gün sonrasına randevu alabilirsiniz."
+                };
+            }
+
+            if (appointment.DoctorId == 0)// buraya id kontrolü nasıl eklerim ilgili id yok ise mesela
+            {
+                return new ReturnModel<Appointment>
+                {
+                    Data = null,
+                    Success = false,
+                    Message = "Doktor id kısmı boş bırakılamaz."
+                };
+            }
+            if (appointment.PatientName is null || appointment.PatientName == "")
+            {
+                return new ReturnModel<Appointment>
+                {
+                    Data = null,
+                    Success = false,
+                    Message = "Hasta isim alanı boş bırakılamaz."
+                };
+            }
+
+                return new ReturnModel<Appointment>
+                {
+
+                    Data = _appointmentRepository.Add(appointment),
+                    Success = true,
+                    Message = "Randevu başarıyla oluşturuldu."
+                };
         }
 
         public Appointment Delete(Guid id)
         {
+
             var result = _appointmentRepository.Delete(id);
             return result;
         }

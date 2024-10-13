@@ -2,6 +2,8 @@
 using HospitalAppointmentSystem.Models.Dtos.Doctors.Request;
 using HospitalAppointmentSystem.Models.Dtos.Doctors.Response;
 using HospitalAppointmentSystem.Repositories.Abstracts;
+using HospitalAppointmentSystem.Repositories.Concretes;
+using HospitalAppointmentSystem.ReturnModels;
 using HospitalAppointmentSystem.Services.Abstracts;
 
 namespace HospitalAppointmentSystem.Services.Concretes;
@@ -14,11 +16,27 @@ public class DoctorService : IDoctorService
         _doctorRepository = doctorRepository;
     }
 
-    public Doctor Add(AddDoctorRequestDto dto)
+    public ReturnModel<Doctor> Add(AddDoctorRequestDto dto)
     {
+        if (dto.Name == null || dto.Name == "")
+        {
+            return new ReturnModel<Doctor>
+            {
+                Data = null,
+                Success = false,
+                Message = "Doktor isim alanı boş bırakılamaz."
+            };
+        }
+
         Doctor doctor = (Doctor)dto;
         Doctor createdDoctor = _doctorRepository.Add(doctor);
-        return createdDoctor;
+
+        return new ReturnModel<Doctor>
+        {
+            Data = createdDoctor,
+            Success = true,
+            Message ="Doktor Başarı ile eklendi."
+        };
 
     }
 
@@ -30,7 +48,7 @@ public class DoctorService : IDoctorService
 
     public List<DoctorResponseDto> GetAll()
     {
-        return _doctorRepository.GetAll().Select(x=>(DoctorResponseDto)x).ToList();
+        return _doctorRepository.GetAll().Select(x => (DoctorResponseDto)x).ToList();
     }
 
     public Doctor GetById(int id)

@@ -1,11 +1,12 @@
 ﻿using HospitalAppointmentSystem.Models.Dtos.Doctors.Request;
 using HospitalAppointmentSystem.Models.Dtos.Doctors.Response;
 using HospitalAppointmentSystem.Models;
+using HospitalAppointmentSystem.ReturnModels;
 
 namespace HospitalAppointmentSystem.Services.Abstracts;
 public interface IAppointmentService
 {
-    Appointment Add(Appointment appointment);
+    ReturnModel<Appointment> Add(Appointment appointment);
     Appointment Update(Appointment appointment);
     Appointment Delete(Guid id);
     List<Appointment> GetAll();

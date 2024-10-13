@@ -35,7 +35,15 @@ public class DoctorsController : ControllerBase
     public IActionResult Add(AddDoctorRequestDto doctor)
     {
         var result = _doctorService.Add(doctor);
-        return StatusCode(200, result);
+        if (!result.Success)
+        {
+            return BadRequest(new
+            {
+                StatusCode = 400,
+                message = result.Message
+            });
+        }
+        return Ok(result);
     }
 
     //[HttpPut("update")]

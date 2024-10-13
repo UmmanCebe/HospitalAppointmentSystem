@@ -35,6 +35,14 @@ public class AppointmentsController : ControllerBase
     public IActionResult Add(Appointment appointment)
     {
         var result = _appointmentService.Add(appointment);
+        if (!result.Success)
+        {
+            return BadRequest(new
+            {
+                StatusCode = 400,
+                message = result.Message
+            });
+        }
         return Ok(result);
     }
 
