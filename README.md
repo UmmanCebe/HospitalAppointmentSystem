@@ -1,7 +1,7 @@
 # HospitalAppointmentSystem
 
 ## Proje Yapısı
-
+.
 └───HospitalAppointmentSystem
     ├───Contexts
     ├───Controllers
